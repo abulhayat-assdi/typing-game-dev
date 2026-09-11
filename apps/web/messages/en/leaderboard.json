@@ -1,0 +1,18 @@
+{
+  "title": "Batch Leaderboard",
+  "subtitle": "Your batch, your rivals, your rank.",
+  "rank": "Rank",
+  "player": "Player",
+  "level": "Level",
+  "xp": "XP",
+  "wpm": "WPM",
+  "accuracy": "Accuracy",
+  "streak": "Streak",
+  "windowToday": "Today",
+  "windowWeek": "Week",
+  "windowMonth": "Month",
+  "windowAll": "All time",
+  "you": "You",
+  "noRuns": "No qualifying runs in this window yet.",
+  "raiseError": "This board is private to its batch."
+}

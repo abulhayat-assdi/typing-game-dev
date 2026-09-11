@@ -128,8 +128,18 @@ describe("typing engine", () => {
   });
 });
 
-describe("diffExpected (server recompute)", () => {
-  it("counts position-wise matches", () => {
+describe("getTypedText (submit payload)", () => {
+  it("returns the committed text including corrections", () => {
+    const s = createTypingSession("abc");
+    s.input("a", 0);
+    s.input("X", 10);
+    s.backspace(20);
+    s.input("b", 30);
+    expect(s.getTypedText()).toBe("ab");
+  });
+});
+
+describe("diffExpected (server recompute)", () => {  it("counts position-wise matches", () => {
     expect(diffExpected("abc", "abc")).toEqual({
       correctChars: 3,
       incorrectChars: 0,

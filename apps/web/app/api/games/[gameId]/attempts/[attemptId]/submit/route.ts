@@ -129,13 +129,31 @@ export async function handleSubmitAttempt(
       valid: verdict.ok,
       reason: verdict.ok ? null : (verdict.rejectReason ?? "REJECTED"),
     });
-    return NextResponse.json({
-      status,
-      score: score.score,
-      accuracy: metrics.accuracy,
-      effectiveWpm: metrics.effectiveWpm,
-      reason: verdict.ok ? null : verdict.rejectReason,
-    });
+    if (status !== "validated") {
+      return NextResponse.json({
+        status,
+        score: score.score,
+        accuracy: metrics.accuracy,
+        effectiveWpm: metrics.effectiveWpm,
+        reason: verdict.rejectReason,
+        progression: null,
+      });
+    }
+    // Validated: run the progression pipeline. A failure here leaves a
+    // validated-but-unrewarded attempt (safe: idempotent replay via SQL).
+    try {
+      const progression = await deps.store.processProgression(attempt.id);
+      return NextResponse.json({
+        status,
+        score: score.score,
+        accuracy: metrics.accuracy,
+        effectiveWpm: metrics.effectiveWpm,
+        reason: null,
+        progression,
+      });
+    } catch {
+      return fail("PROGRESSION_FAILED", enErrors.storageUnavailable, 500);
+    }
   } catch (err) {
     const message = err instanceof Error ? err.message : "SUBMIT_FAILED";
     if (message.includes("ALREADY_FINALIZED")) {

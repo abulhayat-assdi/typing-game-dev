@@ -1,0 +1,11 @@
+{
+  "title": "আপনার অগ্রগতি",
+  "subtitle": "আপনার সব অর্জন, এক জায়গায়।",
+  "xpHistory": "XP ইতিহাস",
+  "streakHistory": "সক্রিয় দিন",
+  "achievements": "অর্জন",
+  "records": "রেকর্ড",
+  "noHistory": "এখনো কিছু রেকর্ড হয়নি।",
+  "xpGain": "+{xp} XP",
+  "levelReached": "লেভেল {level} অর্জিত"
+}

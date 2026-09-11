@@ -48,6 +48,8 @@ export interface TypingSession {
   input(key: string, atMs: number): KeyOutcome;
   backspace(atMs: number): KeyOutcome;
   snapshot(): TypingSnapshot;
+  /** Current committed text (for the single submit payload — nothing else). */
+  getTypedText(): string;
 }
 
 function wordsOf(text: string): string[] {
@@ -146,8 +148,11 @@ export function createTypingSession(
       return { accepted: true, correct: true, done: false };
     },
 
-    snapshot(): TypingSnapshot {
-      const correct = currentCorrect();
+    getTypedText(): string {
+      return typed.join("");
+    },
+
+    snapshot(): TypingSnapshot {      const correct = currentCorrect();
       const incorrect = typed.length - correct;
       const done = typed.length >= chars.length && chars.length > 0;
       const totalWords = wordsOf(expected).length;

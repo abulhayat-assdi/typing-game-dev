@@ -6,6 +6,12 @@
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AttemptStatus } from "@tap/game-engine";
+import {
+  computeCoinAward,
+  computeXpAward,
+  levelForXp,
+  type LevelThreshold,
+} from "@tap/economy";
 
 export interface StoreGame {
   id: string;
@@ -43,6 +49,24 @@ export interface StoredResult {
   rejectedReason: string | null;
 }
 
+export interface ProgressionBadge {
+  slug: string;
+  name: string;
+}
+
+export interface ProgressionSummary {
+  alreadyProcessed: boolean;
+  xp: number;
+  coins: number;
+  level: number;
+  xpTotal: number;
+  leveledUp: boolean;
+  streakCurrent: number;
+  streakBest: number;
+  newBadges: ProgressionBadge[];
+  unlocked: string[];
+}
+
 export interface AttemptStore {
   getActiveGame(slug: string): Promise<StoreGame | null>;
   startAttempt(input: {
@@ -63,6 +87,13 @@ export interface AttemptStore {
     valid: boolean;
     reason: string | null;
   }): Promise<AttemptStatus>;
+  /**
+   * Run the M5 progression pipeline for a VALIDATED attempt (idempotent).
+   * Throws when the attempt is not validated; callers map failures to 500 —
+   * the attempt stays validated and an operator replays via
+   * `SELECT fn_process_progression(id)` (safe: same idempotency key).
+   */
+  processProgression(attemptId: string): Promise<ProgressionSummary>;
 }
 
 function isRecord(v: unknown): v is Record<string, unknown> {
@@ -229,6 +260,40 @@ export function createSupabaseAttemptStore(
       }
       return res.data as AttemptStatus;
     },
+
+    async processProgression(attemptId: string): Promise<ProgressionSummary> {
+      const res = await client.rpc("fn_process_progression", {
+        p_attempt_id: attemptId,
+      });
+      if (res.error || !isRecord(res.data)) {
+        throw new Error(asError(res.error)?.message ?? "PROGRESSION_FAILED");
+      }
+      const d = res.data;
+      const badges: ProgressionBadge[] = Array.isArray(d.new_badges)
+        ? d.new_badges.flatMap((b: unknown) => {
+            if (!isRecord(b)) return [];
+            if (typeof b.slug !== "string" || typeof b.name !== "string") {
+              return [];
+            }
+            return [{ slug: b.slug, name: b.name }];
+          })
+        : [];
+      const unlocked: string[] = Array.isArray(d.unlocked)
+        ? d.unlocked.filter((u): u is string => typeof u === "string")
+        : [];
+      return {
+        alreadyProcessed: d.already_processed === true,
+        xp: typeof d.xp === "number" ? d.xp : 0,
+        coins: typeof d.coins === "number" ? d.coins : 0,
+        level: typeof d.level === "number" ? d.level : 1,
+        xpTotal: typeof d.xp_total === "number" ? d.xp_total : 0,
+        leveledUp: d.leveled_up === true,
+        streakCurrent: typeof d.streak_current === "number" ? d.streak_current : 0,
+        streakBest: typeof d.streak_best === "number" ? d.streak_best : 0,
+        newBadges: badges,
+        unlocked,
+      };
+    },
   };
 }
 
@@ -246,6 +311,33 @@ export interface MemoryGameSeed {
   expiresAfterSeconds?: number;
 }
 
+/**
+ * Test-double level curve. Mirrors the 0008 seed thresholds 1:1 — if the seed
+ * changes, update this table too (route tests assert level transitions).
+ */
+const MEMORY_LEVELS: LevelThreshold[] = [
+  { level: 1, requiredXp: 0 },
+  { level: 2, requiredXp: 30 },
+  { level: 3, requiredXp: 80 },
+  { level: 4, requiredXp: 150 },
+  { level: 5, requiredXp: 250 },
+  { level: 6, requiredXp: 400 },
+  { level: 7, requiredXp: 600 },
+  { level: 8, requiredXp: 850 },
+  { level: 9, requiredXp: 1150 },
+  { level: 10, requiredXp: 1500 },
+  { level: 11, requiredXp: 2000 },
+  { level: 12, requiredXp: 2600 },
+  { level: 13, requiredXp: 3300 },
+  { level: 14, requiredXp: 4100 },
+  { level: 15, requiredXp: 5000 },
+  { level: 16, requiredXp: 6200 },
+  { level: 17, requiredXp: 7600 },
+  { level: 18, requiredXp: 9200 },
+  { level: 19, requiredXp: 11000 },
+  { level: 20, requiredXp: 13000 },
+];
+
 export function createMemoryAttemptStore(
   games: MemoryGameSeed[] = [
     { slug: "test-game" },
@@ -253,6 +345,10 @@ export function createMemoryAttemptStore(
   ],
 ): AttemptStore & { __live: Map<string, StoreAttempt & { result?: StoredResult }> } {
   const live = new Map<string, StoreAttempt & { result?: StoredResult }>();
+  const processed = new Set<string>();
+  const totals = new Map<string, number>();
+  const bests = new Map<string, number>();
+  const firsts = new Set<string>();
   let n = 0;
 
   const findGame = (slug: string): StoreGame | null => {
@@ -329,6 +425,56 @@ export function createMemoryAttemptStore(
       };
       live.set(a.id, done);
       return Promise.resolve(status);
+    },
+
+    processProgression: (attemptId: string): Promise<ProgressionSummary> => {
+      const a = live.get(attemptId);
+      if (!a || a.status !== "validated" || !a.result) {
+        throw new Error("NOT_VALIDATED");
+      }
+      const total = totals.get(a.userId) ?? 0;
+      if (processed.has(attemptId)) {
+        return Promise.resolve({
+          alreadyProcessed: true,
+          xp: 0,
+          coins: 0,
+          level: levelForXp(total, MEMORY_LEVELS),
+          xpTotal: total,
+          leveledUp: false,
+          streakCurrent: 0,
+          streakBest: 0,
+          newBadges: [],
+          unlocked: [],
+        });
+      }
+      const gk = a.userId + ":" + a.gameSlug;
+      const isFirst = !firsts.has(gk);
+      const isPB = (bests.get(gk) ?? -1) < a.result.score;
+      const award = {
+        accuracy: a.result.accuracy,
+        effectiveWpm: a.result.effectiveWpm,
+        isFirstCompletion: isFirst,
+        isPersonalBest: isPB,
+      };
+      const { xp } = computeXpAward(award);
+      const coins = computeCoinAward(award);
+      firsts.add(gk);
+      if (isPB) bests.set(gk, a.result.score);
+      const next = total + xp;
+      totals.set(a.userId, next);
+      processed.add(attemptId);
+      return Promise.resolve({
+        alreadyProcessed: false,
+        xp,
+        coins,
+        level: levelForXp(next, MEMORY_LEVELS),
+        xpTotal: next,
+        leveledUp: levelForXp(next, MEMORY_LEVELS) > levelForXp(total, MEMORY_LEVELS),
+        streakCurrent: 0,
+        streakBest: 0,
+        newBadges: [],
+        unlocked: [],
+      });
     },
   };
 }

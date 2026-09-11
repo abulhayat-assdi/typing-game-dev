@@ -53,9 +53,15 @@ importers:
       '@tap/content':
         specifier: workspace:^
         version: link:../../packages/content
+      '@tap/economy':
+        specifier: workspace:^
+        version: link:../../packages/economy
       '@tap/game-engine':
         specifier: workspace:^
         version: link:../../packages/game-engine
+      '@tap/progression':
+        specifier: workspace:^
+        version: link:../../packages/progression
       '@tap/r2':
         specifier: workspace:^
         version: link:../../packages/r2
@@ -187,6 +193,19 @@ importers:
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
+
+  packages/progression:
+    dependencies:
+      '@tap/game-engine':
+        specifier: workspace:^
+        version: link:../game-engine
+    devDependencies:
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.2)(jiti@1.21.7)(terser@5.16.9)(tsx@4.23.13)(yaml@2.9.0)
 
   packages/r2:
     devDependencies:

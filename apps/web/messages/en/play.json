@@ -1,0 +1,19 @@
+{
+  "tapToFocus": "Tap here, then start typing",
+  "getReady": "Get ready…",
+  "timeLeft": "{seconds}s left",
+  "wpm": "WPM",
+  "accuracy": "Accuracy",
+  "combo": "Combo",
+  "progress": "Progress",
+  "pause": "Pause",
+  "resume": "Resume",
+  "restart": "Restart",
+  "quit": "Quit",
+  "submitting": "Checking your run…",
+  "expired": "Time is up — submitting your run…",
+  "failedToStart": "Could not start the attempt. Please retry.",
+  "failedToSubmit": "Could not submit. Your run is safe — retry shortly.",
+  "focusLost": "Focus lost — tap to continue",
+  "screenReaderProgress": "{done} of {total} characters typed"
+}

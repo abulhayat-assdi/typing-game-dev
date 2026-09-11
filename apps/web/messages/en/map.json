@@ -1,0 +1,10 @@
+{
+  "title": "Adventure Map",
+  "subtitle": "Sixteen worlds. One journey.",
+  "complete": "Complete",
+  "current": "Current",
+  "locked": "Locked",
+  "gamesCompleted": "{done} of {total} games",
+  "nextGame": "Next",
+  "startHere": "Start here"
+}

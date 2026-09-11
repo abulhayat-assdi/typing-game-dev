@@ -77,3 +77,41 @@ docker exec tap-postgres-m2 psql -U postgres -d tap_test -v ON_ERROR_STOP=1 \
 `seed/dev.sql` stays DEV-only. The full 26-game catalog loads via
 `pnpm seed:catalog` against staging/prod (service role, never committed
 credentials) — see `scripts/seed-catalog.ts`.
+
+## M5 — progression + economy
+
+```bash
+docker cp supabase tap-postgres-m2:/supabase
+docker exec tap-postgres-m2 psql -U postgres -d tap_test -v ON_ERROR_STOP=1 \
+  -f /supabase/migrations/0008_progression_schema.sql \
+  -f /supabase/migrations/0009_progression_fn.sql
+
+# 29-test suite (ledgers, levels, badges, achievements, streaks, records,
+# unlocks, idempotency, RLS; BEGIN/ROLLBACK, rerunnable)
+docker exec tap-postgres-m2 psql -U postgres -d tap_test -v ON_ERROR_STOP=1 \
+  -f /supabase/tests/m5_progression_test.sql
+```
+
+`fn_process_progression` is the only writer of earned state; replay a stuck
+validated attempt with `SELECT fn_process_progression('<attempt-id>')`
+(idempotent — safe to run twice).
+
+## M7 — staff access layer
+
+```bash
+docker cp supabase tap-postgres-m2:/supabase
+docker exec tap-postgres-m2 psql -U postgres -d tap_test -v ON_ERROR_STOP=1 \
+  -f /supabase/migrations/0011_staff_access.sql \
+  -f /supabase/migrations/0012_admin_fields.sql
+
+# 32-test suite (account states, staff reads, column guard, audit triggers,
+# role grant/revoke, cross-org isolation, catalog/flag toggles)
+docker exec tap-postgres-m2 psql -U postgres -d tap_test -v ON_ERROR_STOP=1 \
+  -f /supabase/tests/m7_staff_test.sql
+```
+
+0011 is strictly additive (no M2 policy touched): account_status + guarded
+status-only updates, staff SELECTs on attempt/result/streak/award/record
+tables, generic audit triggers, flag management, `fn_grant_role`.
+0012 adds course flags, batch dates, the game-catalog super-admin toggle,
+`fn_admin_lookup_user` and `fn_revoke_role`.

@@ -1,4 +1,15 @@
-﻿// M1 placeholder for @tap/economy. Full implementation lands in later milestones.
-// See docs/architecture.md for the domain contract.
-export const PACKAGE_MILESTONE = "M1-foundation" as const;
-
+﻿/** @tap/economy — reward + level mathematics (M5). Writers live in SQL. */
+export {
+  DEFAULT_REWARD_PROFILE,
+  computeCoinAward,
+  computeXpAward,
+  type AwardBreakdown,
+  type RewardProfile,
+  type ValidatedResultInput,
+} from "./rewards";
+export {
+  levelForXp,
+  xpForLevelFormula,
+  xpToNext,
+  type LevelThreshold,
+} from "./levels";

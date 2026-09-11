@@ -53,8 +53,11 @@ const NODE_IMPORT =
 const SECRET_NAMES =
   /SUPABASE_SERVICE_ROLE_KEY|R2_SECRET_ACCESS_KEY|R2_ACCESS_KEY_ID|AUTH_SECRET/;
 // Import statements only (comments/docs may legitimately name these modules).
+// `import type` is erased at compile and carries zero runtime surface.
+// @supabase/ssr is allowed in clients: it only ever carries the public anon
+// key (browser client). @supabase/supabase-js and lib/server stay banned.
 const SERVER_IMPORT_STATEMENT =
-  /^import\s[^;]*?(lib\/server|@aws-sdk\/|@supabase\/)/m;
+  /^import\s+(?!type\b)[^;]*?(lib\/server|@aws-sdk\/|@supabase\/supabase-js)/m;
 
 function isClientComponent(f: SourceFile): boolean {
   return f.rel.startsWith(CLIENT_SEP) || f.content.includes('"use client"');

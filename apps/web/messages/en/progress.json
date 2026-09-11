@@ -1,0 +1,11 @@
+{
+  "title": "Your Progress",
+  "subtitle": "Everything you have earned, in one place.",
+  "xpHistory": "XP history",
+  "streakHistory": "Active days",
+  "achievements": "Achievements",
+  "records": "Records",
+  "noHistory": "Nothing recorded yet.",
+  "xpGain": "+{xp} XP",
+  "levelReached": "Reached level {level}"
+}

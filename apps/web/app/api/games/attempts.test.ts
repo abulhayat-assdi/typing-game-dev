@@ -211,6 +211,7 @@ describe("POST submit", () => {
   });
 
   it("rejects malformed payloads with 400", async () => {
+
     const store = await freshStore();
     const game = await mustGame(store, "test-game");
     const a = await store.startAttempt({
@@ -227,6 +228,83 @@ describe("POST submit", () => {
       });
       expect(res.status, JSON.stringify(body)).toBe(400);
     }
+  });
+
+  it("attaches progression to validated responses", async () => {
+    const store = await freshStore();
+    const id = await started(store, "hello world");
+    const res = await handleSubmitAttempt(
+      "test-game",
+      id,
+      { typedText: "hello world", elapsedMs: 30000 },
+      { session: U1, store },
+    );
+    const body = (await res.json()) as {
+      progression: {
+        alreadyProcessed: boolean;
+        xp: number;
+        coins: number;
+        level: number;
+        xpTotal: number;
+      } | null;
+    };
+    expect(body.progression?.alreadyProcessed).toBe(false);
+    expect(body.progression?.xp).toBeGreaterThan(0);
+    expect(body.progression?.coins).toBeGreaterThan(0);
+    expect(body.progression?.level).toBeGreaterThanOrEqual(1);
+    expect(body.progression?.xpTotal).toBe(body.progression?.xp);
+  });
+
+  it("accumulates progression across attempts without double grants", async () => {
+    const store = await freshStore();
+    const first = await handleSubmitAttempt(
+      "test-game",
+      await started(store, "hello world"),
+      { typedText: "hello world", elapsedMs: 30000 },
+      { session: U1, store },
+    );
+    const second = await handleSubmitAttempt(
+      "test-game",
+      await started(store, "hello world"),
+      { typedText: "hello world", elapsedMs: 30000 },
+      { session: U1, store },
+    );
+    const b1 = (await first.json()) as {
+      progression: { xp: number; xpTotal: number };
+    };
+    const b2 = (await second.json()) as {
+      progression: { xp: number; xpTotal: number };
+    };
+    // Second run: no first-completion bonus, but totals still accumulate.
+    expect(b2.progression.xp).toBeLessThan(b1.progression.xp);
+    expect(b2.progression.xpTotal).toBe(
+      b1.progression.xpTotal + b2.progression.xp,
+    );
+  });
+
+  it("returns 500 when progression fails, keeping the validated attempt", async () => {
+    const base = await freshStore();
+    const store = {
+      ...base,
+      processProgression: () => Promise.reject(new Error("ledger down")),
+    };
+    const game = await mustGame(store, "test-game");
+    const a = await store.startAttempt({
+      game,
+      userId: U1.userId,
+      difficulty: "beginner",
+      seed: "s",
+      expectedText: "hello world",
+    });
+    const res = await handleSubmitAttempt(
+      "test-game",
+      a.id,
+      { typedText: "hello world", elapsedMs: 30000 },
+      { session: U1, store },
+    );
+    expect(res.status).toBe(500);
+    const attempt = await base.getAttempt(a.id);
+    expect(attempt?.status).toBe("validated");
   });
 });
 

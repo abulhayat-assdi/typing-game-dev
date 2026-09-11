@@ -12,15 +12,37 @@
 import enA11y from "../messages/en/a11y.json";
 import enAuth from "../messages/en/auth.json";
 import enCommon from "../messages/en/common.json";
+import enCompetitions from "../messages/en/competitions.json";
+import enDashboard from "../messages/en/dashboard.json";
 import enErrors from "../messages/en/errors.json";
+import enGames from "../messages/en/games.json";
 import enHome from "../messages/en/home.json";
+import enLeaderboard from "../messages/en/leaderboard.json";
+import enMap from "../messages/en/map.json";
 import enNav from "../messages/en/nav.json";
+import enOnboarding from "../messages/en/onboarding.json";
+import enPlay from "../messages/en/play.json";
+import enProfile from "../messages/en/profile.json";
+import enProgress from "../messages/en/progress.json";
+import enResult from "../messages/en/result.json";
+import enStaff from "../messages/en/staff.json";
 import bnA11y from "../messages/bn/a11y.json";
 import bnAuth from "../messages/bn/auth.json";
 import bnCommon from "../messages/bn/common.json";
+import bnCompetitions from "../messages/bn/competitions.json";
+import bnDashboard from "../messages/bn/dashboard.json";
 import bnErrors from "../messages/bn/errors.json";
+import bnGames from "../messages/bn/games.json";
 import bnHome from "../messages/bn/home.json";
+import bnLeaderboard from "../messages/bn/leaderboard.json";
+import bnMap from "../messages/bn/map.json";
 import bnNav from "../messages/bn/nav.json";
+import bnOnboarding from "../messages/bn/onboarding.json";
+import bnPlay from "../messages/bn/play.json";
+import bnProfile from "../messages/bn/profile.json";
+import bnProgress from "../messages/bn/progress.json";
+import bnResult from "../messages/bn/result.json";
+import bnStaff from "../messages/bn/staff.json";
 
 export const LOCALES = ["en", "bn"] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -30,9 +52,20 @@ export interface Messages {
   a11y: typeof enA11y;
   auth: typeof enAuth;
   common: typeof enCommon;
+  competitions: typeof enCompetitions;
+  dashboard: typeof enDashboard;
   errors: typeof enErrors;
+  games: typeof enGames;
   home: typeof enHome;
+  leaderboard: typeof enLeaderboard;
+  map: typeof enMap;
   nav: typeof enNav;
+  onboarding: typeof enOnboarding;
+  play: typeof enPlay;
+  profile: typeof enProfile;
+  progress: typeof enProgress;
+  result: typeof enResult;
+  staff: typeof enStaff;
 }
 
 export type Namespace = keyof Messages;
@@ -42,9 +75,20 @@ const en: Messages = {
   a11y: enA11y,
   auth: enAuth,
   common: enCommon,
+  competitions: enCompetitions,
+  dashboard: enDashboard,
   errors: enErrors,
+  games: enGames,
   home: enHome,
+  leaderboard: enLeaderboard,
+  map: enMap,
   nav: enNav,
+  onboarding: enOnboarding,
+  play: enPlay,
+  profile: enProfile,
+  progress: enProgress,
+  result: enResult,
+  staff: enStaff,
 };
 
 /** Bangla may omit keys; anything missing falls back to English. */
@@ -53,9 +97,20 @@ const bnRaw: PartialMessages = {
   a11y: bnA11y,
   auth: bnAuth,
   common: bnCommon,
+  competitions: bnCompetitions,
+  dashboard: bnDashboard,
   errors: bnErrors,
+  games: bnGames,
   home: bnHome,
+  leaderboard: bnLeaderboard,
+  map: bnMap,
   nav: bnNav,
+  onboarding: bnOnboarding,
+  play: bnPlay,
+  profile: bnProfile,
+  progress: bnProgress,
+  result: bnResult,
+  staff: bnStaff,
 };
 
 function mergeNamespace<K extends Namespace>(
@@ -101,9 +156,23 @@ export function getMessages(locale: Locale): Messages {
     a11y: mergeNamespace<"a11y">(en.a11y, bnRaw.a11y),
     auth: mergeNamespace<"auth">(en.auth, bnRaw.auth),
     common: mergeNamespace<"common">(en.common, bnRaw.common),
+    competitions: mergeNamespace<"competitions">(
+      en.competitions,
+      bnRaw.competitions,
+    ),
+    dashboard: mergeNamespace<"dashboard">(en.dashboard, bnRaw.dashboard),
     errors: mergeNamespace<"errors">(en.errors, bnRaw.errors),
+    games: mergeNamespace<"games">(en.games, bnRaw.games),
     home: mergeNamespace<"home">(en.home, bnRaw.home),
+    leaderboard: mergeNamespace<"leaderboard">(en.leaderboard, bnRaw.leaderboard),
+    map: mergeNamespace<"map">(en.map, bnRaw.map),
     nav: mergeNamespace<"nav">(en.nav, bnRaw.nav),
+    onboarding: mergeNamespace<"onboarding">(en.onboarding, bnRaw.onboarding),
+    play: mergeNamespace<"play">(en.play, bnRaw.play),
+    profile: mergeNamespace<"profile">(en.profile, bnRaw.profile),
+    progress: mergeNamespace<"progress">(en.progress, bnRaw.progress),
+    result: mergeNamespace<"result">(en.result, bnRaw.result),
+    staff: mergeNamespace<"staff">(en.staff, bnRaw.staff),
   };
 }
 

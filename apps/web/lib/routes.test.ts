@@ -10,7 +10,16 @@ import {
 
 describe("classifyRoute", () => {
   it("marks landing/auth/legal paths public", () => {
-    for (const p of ["/en", "/en/", "/bn/login", "/en/register", "/bn/terms"]) {
+    for (const p of [
+      "/en",
+      "/en/",
+      "/bn/login",
+      "/en/register",
+      "/bn/terms",
+      "/en/forgot-password",
+      "/bn/reset-password",
+      "/en/suspended",
+    ]) {
       expect(classifyRoute(p).access, p).toBe("public");
     }
   });
@@ -20,6 +29,9 @@ describe("classifyRoute", () => {
       "/en/dashboard",
       "/bn/profile",
       "/en/staff",
+      "/en/teacher",
+      "/en/admin",
+      "/bn/super-admin",
       "/en/api-private",
     ]) {
       expect(classifyRoute(p).access, p).toBe("protected");
