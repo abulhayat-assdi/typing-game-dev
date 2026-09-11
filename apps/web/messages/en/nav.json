@@ -1,0 +1,22 @@
+{
+  "home": "Home",
+  "dashboard": "Dashboard",
+  "adventureMap": "Adventure Map",
+  "games": "Games",
+  "missions": "Missions",
+  "profile": "Profile",
+  "leaderboard": "Leaderboard",
+  "competitions": "Competitions",
+  "clan": "Clan",
+  "adminDashboard": "Admin Dashboard",
+  "adminCourses": "Courses",
+  "adminBatches": "Batches",
+  "adminStudents": "Students",
+  "adminGames": "Games",
+  "adminCompetitions": "Competitions",
+  "adminAnalytics": "Analytics",
+  "language": "Language",
+  "login": "Log in",
+  "register": "Create account",
+  "logout": "Log out"
+}

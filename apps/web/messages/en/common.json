@@ -1,0 +1,17 @@
+{
+  "appName": "Typing Adventure",
+  "tagline": "Learn typing through adventure",
+  "languageEnglish": "English",
+  "languageBangla": "বাংলা",
+  "actionRetry": "Retry",
+  "actionClose": "Close",
+  "actionCancel": "Cancel",
+  "actionSave": "Save",
+  "actionContinue": "Continue",
+  "actionBack": "Back",
+  "actionBackHome": "Back to home",
+  "stateLoading": "Loading…",
+  "stateSaving": "Saving…",
+  "stateEmpty": "Nothing here yet.",
+  "stateOffline": "You appear to be offline."
+}

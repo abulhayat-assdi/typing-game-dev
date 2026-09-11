@@ -1,0 +1,4 @@
+[project]
+name = "typing-adventure-platform"
+# Self-hosted Supabase on your VPS. Local `supabase start` mirrors this shape.
+# Production values (URL/keys) come from env — see ../../.env.example.

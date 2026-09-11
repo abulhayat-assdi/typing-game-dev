@@ -1,0 +1,63 @@
+/**
+ * @tap/ui design tokens (M3). Single source of truth for color, radius,
+ * shadow, type and motion. The web app imports this file in globals.css;
+ * Tailwind maps utilities to these vars (see apps/web/tailwind.config.ts).
+ * Light is the default theme; dark overrides ride on [data-theme="dark"].
+ */
+:root {
+  --font-sans: "Inter", "Hind Siliguri", "Noto Sans Bengali", ui-sans-serif,
+    system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Baloo 2", "Hind Siliguri", var(--font-sans);
+
+  --color-canvas: #f6f4ff;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f1edfd;
+  --color-ink: #1d1440;
+  --color-ink-muted: #5b5178;
+  --color-ink-faint: #8b83a5;
+  --color-line: #e3ddf5;
+
+  --color-primary-50: #f3efff;
+  --color-primary-100: #e7defe;
+  --color-primary-500: #7c3aed;
+  --color-primary-600: #6d28d9;
+  --color-primary-700: #5b21b6;
+
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #f59e0b;
+
+  --color-success-500: #10b981;
+  --color-success-100: #d1fae5;
+  --color-danger-500: #f43f5e;
+  --color-danger-100: #ffe4e6;
+  --color-info-500: #0ea5e9;
+  --color-info-100: #e0f2fe;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --shadow-sm: 0 1px 2px rgb(29 20 64 / 0.08);
+  --shadow-md: 0 6px 16px -6px rgb(29 20 64 / 0.18);
+  --shadow-lg: 0 18px 40px -12px rgb(76 29 149 / 0.28);
+
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-slow: 320ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-theme="dark"] {
+  --color-canvas: #0f0b22;
+  --color-surface: #1a1440;
+  --color-surface-raised: #241b52;
+  --color-ink: #f1edfd;
+  --color-ink-muted: #b9b1d6;
+  --color-ink-faint: #857ca3;
+  --color-line: #352a63;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 6px 16px -6px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 18px 40px -12px rgb(0 0 0 / 0.6);
+}

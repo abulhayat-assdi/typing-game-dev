@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Next.js
+apps/web/.next/
+apps/web/out/
+apps/web/.open-next/
+apps/web/.wrangler/
+
+# Turborepo
+.turbo/
+
+# Build outputs
+dist/
+*.tsbuildinfo
+
+# Env (never commit real values)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs / coverage / test artifacts
+*.log
+coverage/
+test-results/
+playwright-report/
+
+# Wrangler
+.wrangler/
+workers/

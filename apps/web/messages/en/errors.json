@@ -1,0 +1,19 @@
+{
+  "genericTitle": "Something went wrong",
+  "genericDescription": "An unexpected error occurred. Please try again.",
+  "genericRetry": "Try again",
+  "notFoundTitle": "Page not found",
+  "notFoundDescription": "The page you are looking for does not exist or was moved.",
+  "notFoundBackHome": "Back to home",
+  "unauthorizedTitle": "Log in required",
+  "unauthorizedDescription": "You need to be logged in to view this page.",
+  "unauthorizedSignIn": "Log in",
+  "requiredField": "This field is required.",
+  "invalidEmail": "Enter a valid email address.",
+  "passwordTooShort": "Password must be at least {min} characters.",
+  "valuesMismatch": "Values do not match.",
+  "networkTitle": "Connection problem",
+  "networkDescription": "Check your internet connection and try again.",
+  "storageUnavailable": "File storage is temporarily unavailable.",
+  "fileNotAvailable": "The requested file is not available."
+}

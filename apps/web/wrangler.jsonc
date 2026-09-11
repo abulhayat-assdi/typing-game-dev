@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developers.cloudflare.com/workers/wrangler/configuration-schema.json",
+  "name": "typing-adventure-platform",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  // Production bindings are attached via `wrangler secret put` / dashboard,
+  // never hard-coded here. See ../../.env.example for the full variable list.
+  "vars": {
+    "APP_ENV": "production",
+    "R2_PUBLIC_BUCKET": "tap-r2-public",
+    "R2_PUBLIC_BASE_URL": "https://tap-r2-public.example-r2.dev"
+  },
+  "env": {
+    "preview": {
+      "name": "typing-adventure-platform-preview",
+      "vars": {
+        "APP_ENV": "preview",
+        "R2_PUBLIC_BUCKET": "tap-r2-public-preview",
+        "R2_PUBLIC_BASE_URL": "https://tap-r2-public-preview.example-r2.dev"
+      }
+    }
+  },
+  "observability": {
+    "enabled": true
+  }
+}

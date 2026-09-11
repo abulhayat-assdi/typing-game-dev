@@ -1,0 +1,19 @@
+{
+  "genericTitle": "কিছু একটা ভুল হয়েছে",
+  "genericDescription": "একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। আবার চেষ্টা করুন।",
+  "genericRetry": "আবার চেষ্টা করুন",
+  "notFoundTitle": "পেজ পাওয়া যায়নি",
+  "notFoundDescription": "আপনি যে পেজটি খুঁজছেন তা নেই বা সরিয়ে নেওয়া হয়েছে।",
+  "notFoundBackHome": "হোমে ফিরে যান",
+  "unauthorizedTitle": "লগ ইন প্রয়োজন",
+  "unauthorizedDescription": "এই পেজটি দেখতে আপনাকে লগ ইন করতে হবে।",
+  "unauthorizedSignIn": "লগ ইন",
+  "requiredField": "এই ঘরটি পূরণ করা বাধ্যতামূলক।",
+  "invalidEmail": "সঠিক ইমেইল ঠিকানা দিন।",
+  "passwordTooShort": "পাসওয়ার্ড কমপক্ষে {min} অক্ষরের হতে হবে।",
+  "valuesMismatch": "মানগুলো মিলছে না।",
+  "networkTitle": "সংযোগ সমস্যা",
+  "networkDescription": "ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।",
+  "storageUnavailable": "ফাইল স্টোরেজ সাময়িকভাবে অনুপলব্ধ।",
+  "fileNotAvailable": "অনুরোধ করা ফাইলটি পাওয়া যায়নি।"
+}

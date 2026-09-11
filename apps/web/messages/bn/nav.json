@@ -1,0 +1,22 @@
+{
+  "home": "হোম",
+  "dashboard": "ড্যাশবোর্ড",
+  "adventureMap": "অ্যাডভেঞ্চার ম্যাপ",
+  "games": "গেমস",
+  "missions": "মিশন",
+  "profile": "প্রোফাইল",
+  "leaderboard": "লিডারবোর্ড",
+  "competitions": "প্রতিযোগিতা",
+  "clan": "ক্ল্যান",
+  "adminDashboard": "অ্যাডমিন ড্যাশবোর্ড",
+  "adminCourses": "কোর্স",
+  "adminBatches": "ব্যাচ",
+  "adminStudents": "শিক্ষার্থী",
+  "adminGames": "গেমস",
+  "adminCompetitions": "প্রতিযোগিতা",
+  "adminAnalytics": "অ্যানালিটিক্স",
+  "language": "ভাষা",
+  "login": "লগ ইন",
+  "register": "অ্যাকাউন্ট তৈরি",
+  "logout": "লগ আউট"
+}

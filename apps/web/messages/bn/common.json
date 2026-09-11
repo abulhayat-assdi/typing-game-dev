@@ -1,0 +1,17 @@
+{
+  "appName": "টাইপিং অ্যাডভেঞ্চার",
+  "tagline": "অ্যাডভেঞ্চারের মাধ্যমে টাইপিং শিখুন",
+  "languageEnglish": "English",
+  "languageBangla": "বাংলা",
+  "actionRetry": "আবার চেষ্টা করুন",
+  "actionClose": "বন্ধ করুন",
+  "actionCancel": "বাতিল",
+  "actionSave": "সংরক্ষণ",
+  "actionContinue": "চালিয়ে যান",
+  "actionBack": "পেছনে",
+  "actionBackHome": "হোমে ফিরে যান",
+  "stateLoading": "লোড হচ্ছে…",
+  "stateSaving": "সংরক্ষণ হচ্ছে…",
+  "stateEmpty": "এখানে এখনো কিছু নেই।",
+  "stateOffline": "মনে হচ্ছে আপনি অফলাইনে আছেন।"
+}

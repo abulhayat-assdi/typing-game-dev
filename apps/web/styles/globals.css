@@ -1,0 +1,34 @@
+@import "@tap/ui/styles/tokens.css";
+@import "@tap/ui/styles/components.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Shell base (M3): design tokens + component styles come from @tap/ui. */
+:root {
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-canvas text-ink antialiased;
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
