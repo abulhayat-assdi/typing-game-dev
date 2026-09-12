@@ -23,6 +23,7 @@ import enMap from "../messages/en/map.json";
 import enMissions from "../messages/en/missions.json";
 import enWars from "../messages/en/wars.json";
 import enBosses from "../messages/en/bosses.json";
+import enSeasons from "../messages/en/seasons.json";
 import enNav from "../messages/en/nav.json";
 import enOnboarding from "../messages/en/onboarding.json";
 import enPlay from "../messages/en/play.json";
@@ -44,6 +45,7 @@ import bnMap from "../messages/bn/map.json";
 import bnMissions from "../messages/bn/missions.json";
 import bnWars from "../messages/bn/wars.json";
 import bnBosses from "../messages/bn/bosses.json";
+import bnSeasons from "../messages/bn/seasons.json";
 import bnNav from "../messages/bn/nav.json";
 import bnOnboarding from "../messages/bn/onboarding.json";
 import bnPlay from "../messages/bn/play.json";
@@ -71,6 +73,7 @@ export interface Messages {
   missions: typeof enMissions;
   wars: typeof enWars;
   bosses: typeof enBosses;
+  seasons: typeof enSeasons;
   nav: typeof enNav;
   onboarding: typeof enOnboarding;
   play: typeof enPlay;
@@ -98,6 +101,7 @@ const en: Messages = {
   missions: enMissions,
   wars: enWars,
   bosses: enBosses,
+  seasons: enSeasons,
   nav: enNav,
   onboarding: enOnboarding,
   play: enPlay,
@@ -124,6 +128,7 @@ const bnRaw: PartialMessages = {
   missions: bnMissions,
   wars: bnWars,
   bosses: bnBosses,
+  seasons: bnSeasons,
   nav: bnNav,
   onboarding: bnOnboarding,
   play: bnPlay,
@@ -190,6 +195,7 @@ export function getMessages(locale: Locale): Messages {
     missions: mergeNamespace<"missions">(en.missions, bnRaw.missions),
     wars: mergeNamespace<"wars">(en.wars, bnRaw.wars),
     bosses: mergeNamespace<"bosses">(en.bosses, bnRaw.bosses),
+    seasons: mergeNamespace<"seasons">(en.seasons, bnRaw.seasons),
     nav: mergeNamespace<"nav">(en.nav, bnRaw.nav),
     onboarding: mergeNamespace<"onboarding">(en.onboarding, bnRaw.onboarding),
     play: mergeNamespace<"play">(en.play, bnRaw.play),

@@ -13,6 +13,7 @@ export function StudentNav({ locale }: { locale: Locale }) {
     { href: `/${locale}/map`, label: t("adventureMap") },
     { href: `/${locale}/games`, label: t("games") },
     { href: `/${locale}/missions`, label: t("missions") },
+    { href: `/${locale}/season`, label: t("season") },
     { href: `/${locale}/clan`, label: t("clan") },
     { href: `/${locale}/leaderboard`, label: t("leaderboard") },
     { href: `/${locale}/competitions`, label: t("competitions") },

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Card, CardContent, EmptyState } from "@tap/ui";
 import { isLocale, getTranslator } from "../../../../lib/i18n";
 import { clanPageContext } from "../../../../lib/server/clan-pages";
+import { userDbClient } from "../../../../lib/server/auth";
+import { createSupabaseSeasonStore } from "../../../../lib/server/season-store";
 import { ClanBanner } from "../../../../components/clan-banner";
 import { ClanMembersTable } from "../../../../components/clan-members-table";
 import { ClanHelpBoard } from "../../../../components/clan-help-board";
@@ -18,11 +20,22 @@ export default async function ClanPage({
   const t = getTranslator(locale, "clans");
   const tw = getTranslator(locale, "wars");
   const tb = getTranslator(locale, "bosses");
+  const ts = getTranslator(locale, "seasons");
   const { session, store } = await clanPageContext(locale);
   const clan = await store.getMyClan(session.userId);
   if (!clan) {
     return <EmptyState title={t("hubTitle")} description={t("emptySection")} />;
   }
+  const client = await userDbClient();
+  const seasons = client
+    ? await createSupabaseSeasonStore(client).listSeasons()
+    : [];
+  const activeSeason = seasons.find((s) => s.status === "active") ?? null;
+  const clanSeasonBoard =
+    client && activeSeason
+      ? await createSupabaseSeasonStore(client).getBoard(activeSeason.id, "clan")
+      : [];
+  const clanSeasonRow = clanSeasonBoard.find((r) => r.participantId === clan.id) ?? null;
   const [roster, missions, help, activity] = await Promise.all([
     store.getRoster(clan.id),
     store.getMissions(clan.id),
@@ -50,7 +63,25 @@ export default async function ClanPage({
         >
           {tb("hubTitle")}
         </Link>
+        <Link href={`/${locale}/season`} className="tap-btn tap-btn-primary">
+          {ts("hubTitle")}
+        </Link>
       </div>
+
+      {activeSeason && clanSeasonRow ? (
+        <Card>
+          <CardContent>
+            <p className="text-sm font-bold">
+              {activeSeason.name} ·{" "}
+              {ts("myPoints", { points: clanSeasonRow.points })} ·{" "}
+              {ts("myRank", { rank: clanSeasonRow.rank })}
+              {clanSeasonRow.tier === null
+                ? ""
+                : ` · ${ts("myTier", { tier: clanSeasonRow.tier })}`}
+            </p>
+          </CardContent>
+        </Card>
+      ) : null}
 
       <Card>
         <CardContent>

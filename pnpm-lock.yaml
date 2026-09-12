@@ -240,6 +240,12 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  packages/season:
+    devDependencies:
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   packages/ui:
     devDependencies:
       '@types/react':

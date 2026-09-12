@@ -1,0 +1,18 @@
+{
+  "hubTitle": "সিজন",
+  "hubSubtitle": "পয়েন্ট, টায়ার ও গৌরবের দৌড়।",
+  "noActiveSeason": "এখন কোনো সক্রিয় সিজন নেই।",
+  "sectionStudentBoard": "শিক্ষার্থী লিডারবোর্ড",
+  "sectionClanBoard": "ক্ল্যান লিডারবোর্ড",
+  "sectionRewards": "সিজন পুরস্কার",
+  "sectionHistory": "পূর্ববর্তী সিজন",
+  "emptyBoard": "এখনো কোনো পয়েন্ট নেই।",
+  "manageTitle": "সিজন",
+  "noSeasons": "এখনো কোনো সিজন নেই।",
+  "createTitle": "সিজন তৈরি",
+  "saveDraft": "খসড়া সংরক্ষণ",
+  "schedule": "নির্ধারণ",
+  "activate": "সক্রিয় করুন",
+  "advance": "এগিয়ে নিন",
+  "actionFailed": "কাজটি ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+}
