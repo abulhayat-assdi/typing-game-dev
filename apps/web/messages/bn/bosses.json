@@ -1,0 +1,16 @@
+{
+  "hubTitle": "বস রেইড",
+  "hubSubtitle": "তোমার ক্ল্যান বনাম দানব।",
+  "sectionActive": "চলমান যুদ্ধ",
+  "sectionUpcoming": "আসন্ন",
+  "sectionCompleted": "সমাপ্ত",
+  "emptySection": "এখনো কোনো যুদ্ধ নেই।",
+  "attackNow": "এখন আক্রমণ করো",
+  "viewBattle": "যুদ্ধ দেখো",
+  "manageTitle": "ক্ল্যান বস",
+  "noBosses": "এখনো কোনো বস নেই।",
+  "saveDraft": "খসড়া সংরক্ষণ",
+  "activate": "সক্রিয় করুন",
+  "advance": "এগিয়ে নিন",
+  "actionFailed": "কাজটি ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+}

@@ -1,0 +1,16 @@
+{
+  "hubTitle": "ক্ল্যান যুদ্ধ",
+  "hubSubtitle": "তোমার ক্ল্যান বনাম বিশ্ব।",
+  "sectionLive": "চলমান যুদ্ধ",
+  "sectionUpcoming": "আসন্ন",
+  "sectionCompleted": "সমাপ্ত",
+  "emptySection": "এখনো কোনো যুদ্ধ নেই।",
+  "challenge": "চ্যালেঞ্জ করুন",
+  "accept": "গ্রহণ করুন",
+  "decline": "প্রত্যাখ্যান",
+  "cancelWar": "বাতিল করুন",
+  "finalize": "চূড়ান্ত করুন",
+  "manageTitle": "ক্ল্যান যুদ্ধ",
+  "noWars": "এখনো কোনো যুদ্ধ নেই।",
+  "actionFailed": "কাজটি ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+}

@@ -62,7 +62,7 @@ VALUES
 INSERT INTO public.game_versions (game_id, version, definition)
 SELECT id, 1, '{}' FROM public.games WHERE slug = 'm9-game';
 
-SELECT plan(49);
+SELECT plan(50);
 
 SET ROLE authenticated;
 

@@ -73,7 +73,7 @@ VALUES
 INSERT INTO public.game_versions (game_id, version, definition)
 SELECT id, 1, '{}' FROM public.games WHERE slug = 'c9-game';
 
-SELECT plan(46);
+SELECT plan(47);
 
 SET ROLE authenticated;
 SELECT tests.set_claims('d0d0d0d0-0000-0000-0000-000000000001', 'c9a@example.com');

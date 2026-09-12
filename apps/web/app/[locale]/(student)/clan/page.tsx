@@ -16,6 +16,8 @@ export default async function ClanPage({
 }) {
   const locale = isLocale(params.locale) ? params.locale : "en";
   const t = getTranslator(locale, "clans");
+  const tw = getTranslator(locale, "wars");
+  const tb = getTranslator(locale, "bosses");
   const { session, store } = await clanPageContext(locale);
   const clan = await store.getMyClan(session.userId);
   if (!clan) {
@@ -34,6 +36,21 @@ export default async function ClanPage({
   return (
     <div className="flex flex-col gap-6">
       <ClanBanner locale={locale} clan={clan} />
+
+      <div className="flex flex-wrap gap-2">
+        <Link
+          href={`/${locale}/clan/wars`}
+          className="tap-btn tap-btn-primary"
+        >
+          {tw("hubTitle")}
+        </Link>
+        <Link
+          href={`/${locale}/clan/bosses`}
+          className="tap-btn tap-btn-primary"
+        >
+          {tb("hubTitle")}
+        </Link>
+      </div>
 
       <Card>
         <CardContent>

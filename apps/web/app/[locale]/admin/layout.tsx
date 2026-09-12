@@ -45,6 +45,8 @@ export default async function AdminLayout({
           { href: `${base}/competitions`, label: tn("adminCompetitions") },
           { href: `${base}/missions`, label: tn("adminMissions") },
           { href: `${base}/clans`, label: tn("adminClans") },
+          { href: `${base}/wars`, label: tn("adminWars") },
+          { href: `${base}/bosses`, label: tn("adminBosses") },
         ]}
       />
       <div className="mx-auto w-full max-w-6xl px-4 py-6">{children}</div>

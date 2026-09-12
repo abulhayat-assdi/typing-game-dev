@@ -21,6 +21,8 @@ import enHome from "../messages/en/home.json";
 import enLeaderboard from "../messages/en/leaderboard.json";
 import enMap from "../messages/en/map.json";
 import enMissions from "../messages/en/missions.json";
+import enWars from "../messages/en/wars.json";
+import enBosses from "../messages/en/bosses.json";
 import enNav from "../messages/en/nav.json";
 import enOnboarding from "../messages/en/onboarding.json";
 import enPlay from "../messages/en/play.json";
@@ -40,6 +42,8 @@ import bnHome from "../messages/bn/home.json";
 import bnLeaderboard from "../messages/bn/leaderboard.json";
 import bnMap from "../messages/bn/map.json";
 import bnMissions from "../messages/bn/missions.json";
+import bnWars from "../messages/bn/wars.json";
+import bnBosses from "../messages/bn/bosses.json";
 import bnNav from "../messages/bn/nav.json";
 import bnOnboarding from "../messages/bn/onboarding.json";
 import bnPlay from "../messages/bn/play.json";
@@ -65,6 +69,8 @@ export interface Messages {
   leaderboard: typeof enLeaderboard;
   map: typeof enMap;
   missions: typeof enMissions;
+  wars: typeof enWars;
+  bosses: typeof enBosses;
   nav: typeof enNav;
   onboarding: typeof enOnboarding;
   play: typeof enPlay;
@@ -90,6 +96,8 @@ const en: Messages = {
   leaderboard: enLeaderboard,
   map: enMap,
   missions: enMissions,
+  wars: enWars,
+  bosses: enBosses,
   nav: enNav,
   onboarding: enOnboarding,
   play: enPlay,
@@ -114,6 +122,8 @@ const bnRaw: PartialMessages = {
   leaderboard: bnLeaderboard,
   map: bnMap,
   missions: bnMissions,
+  wars: bnWars,
+  bosses: bnBosses,
   nav: bnNav,
   onboarding: bnOnboarding,
   play: bnPlay,
@@ -178,6 +188,8 @@ export function getMessages(locale: Locale): Messages {
     leaderboard: mergeNamespace<"leaderboard">(en.leaderboard, bnRaw.leaderboard),
     map: mergeNamespace<"map">(en.map, bnRaw.map),
     missions: mergeNamespace<"missions">(en.missions, bnRaw.missions),
+    wars: mergeNamespace<"wars">(en.wars, bnRaw.wars),
+    bosses: mergeNamespace<"bosses">(en.bosses, bnRaw.bosses),
     nav: mergeNamespace<"nav">(en.nav, bnRaw.nav),
     onboarding: mergeNamespace<"onboarding">(en.onboarding, bnRaw.onboarding),
     play: mergeNamespace<"play">(en.play, bnRaw.play),
