@@ -18,6 +18,8 @@ import { createSupabaseMissionStore } from "../../../../lib/server/mission-store
 import { WelcomeBanner } from "../../../../components/welcome-banner";
 import { XpCounter } from "../../../../components/xp-counter";
 import { MissionWidgets } from "../../../../components/mission-widgets";
+import { RecommendedNext } from "../../../../components/recommendation-card";
+import { createSupabaseAdaptiveStore } from "../../../../lib/server/adaptive-store";
 
 export default async function DashboardPage({
   params,
@@ -51,6 +53,11 @@ export default async function DashboardPage({
   const recommendedHref = data.recommended
     ? `/${locale}/games/${data.recommended.slug}`
     : `/${locale}/games`;
+  const adaptiveSummary = missionClient
+    ? await createSupabaseAdaptiveStore(missionClient)
+        .getSummary()
+        .catch(() => null)
+    : null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -126,6 +133,11 @@ export default async function DashboardPage({
         locale={locale}
         daily={missions.filter((m) => m.period === "daily")}
         weekly={missions.filter((m) => m.period === "weekly")}
+      />
+
+      <RecommendedNext
+        locale={locale}
+        recommendation={adaptiveSummary?.recommendations[0] ?? null}
       />
 
       {data.latestBadge ? (        <Card>

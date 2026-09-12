@@ -7,6 +7,12 @@ import { userDbClient } from "../../../../../lib/server/auth";
 import { createSupabaseStaffStore } from "../../../../../lib/server/staff-store";
 import { ForbiddenError } from "../../../../../lib/server/staff-store";
 import { getTeacherBatch } from "../../../../../lib/server/staff-data";
+import { createSupabaseAdaptiveStore } from "../../../../../lib/server/adaptive-store";
+import { AdaptiveBatchBoard } from "../../../../../components/adaptive-batch-board";
+
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null && !Array.isArray(v);
+}
 
 export default async function TeacherBatchPage({
   params,
@@ -29,6 +35,30 @@ export default async function TeacherBatchPage({
     if (e instanceof ForbiddenError) notFound();
     throw e;
   }
+  let adaptive: Record<string, unknown> = {};
+  try {
+    adaptive = await createSupabaseAdaptiveStore(client).batchSummary(
+      params.batchId,
+    );
+  } catch {
+    adaptive = {};
+  }
+  const attention = Array.isArray(adaptive.attention)
+    ? adaptive.attention.filter(isRecord).map((a, i) => ({
+        userId: typeof a.user_id === "string" ? a.user_id : `learner-${String(i)}`,
+        accuracyDeclining: a.accuracy_declining === true,
+        wpmDeclining: a.wpm_declining === true,
+        criticalKeys:
+          typeof a.critical_keys === "number" ? a.critical_keys : 0,
+      }))
+    : [];
+  const averages = isRecord(adaptive.averages) ? adaptive.averages : null;
+  const mechanics = Array.isArray(adaptive.weak_mechanics)
+    ? adaptive.weak_mechanics
+        .filter(isRecord)
+        .map((m) => (typeof m.mechanic === "string" ? m.mechanic : ""))
+        .filter((s) => s.length > 0)
+    : [];
 
   return (
     <div className="flex flex-col gap-6">
@@ -80,6 +110,20 @@ export default async function TeacherBatchPage({
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
         <StatCard label={t("recentActivity")} value={data.recent.length} />
       </div>
+
+      <AdaptiveBatchBoard
+        locale={locale}
+        attention={attention}
+        avgAccuracy={
+          averages && typeof averages.accuracy === "number"
+            ? averages.accuracy
+            : null
+        }
+        avgWpm={
+          averages && typeof averages.wpm === "number" ? averages.wpm : null
+        }
+        mechanics={mechanics}
+      />
     </div>
   );
 }

@@ -274,7 +274,6 @@ BEGIN
           jsonb_build_object('slug', v_s, 'name', v_badge.name_en));
       END IF;
     END IF;
-    END IF;
   END LOOP;
 
   -- -- Achievements ------------------------------------------------------------

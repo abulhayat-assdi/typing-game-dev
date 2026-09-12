@@ -19,6 +19,7 @@
     "@aws-sdk/s3-request-presigner": "^3.1130.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
+    "@tap/adaptive": "workspace:^",
     "@tap/content": "workspace:^",
     "@tap/economy": "workspace:^",
     "@tap/game-engine": "workspace:^",

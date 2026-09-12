@@ -31,6 +31,8 @@ import enProfile from "../messages/en/profile.json";
 import enProgress from "../messages/en/progress.json";
 import enResult from "../messages/en/result.json";
 import enStaff from "../messages/en/staff.json";
+import enTournaments from "../messages/en/tournaments.json";
+import enAdaptive from "../messages/en/adaptive.json";
 import bnA11y from "../messages/bn/a11y.json";
 import bnAuth from "../messages/bn/auth.json";
 import bnCommon from "../messages/bn/common.json";
@@ -53,6 +55,8 @@ import bnProfile from "../messages/bn/profile.json";
 import bnProgress from "../messages/bn/progress.json";
 import bnResult from "../messages/bn/result.json";
 import bnStaff from "../messages/bn/staff.json";
+import bnTournaments from "../messages/bn/tournaments.json";
+import bnAdaptive from "../messages/bn/adaptive.json";
 
 export const LOCALES = ["en", "bn"] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -81,6 +85,8 @@ export interface Messages {
   progress: typeof enProgress;
   result: typeof enResult;
   staff: typeof enStaff;
+  tournaments: typeof enTournaments;
+  adaptive: typeof enAdaptive;
 }
 
 export type Namespace = keyof Messages;
@@ -109,6 +115,8 @@ const en: Messages = {
   progress: enProgress,
   result: enResult,
   staff: enStaff,
+  tournaments: enTournaments,
+  adaptive: enAdaptive,
 };
 
 /** Bangla may omit keys; anything missing falls back to English. */
@@ -136,6 +144,8 @@ const bnRaw: PartialMessages = {
   progress: bnProgress,
   result: bnResult,
   staff: bnStaff,
+  tournaments: bnTournaments,
+  adaptive: bnAdaptive,
 };
 
 function mergeNamespace<K extends Namespace>(
@@ -203,6 +213,8 @@ export function getMessages(locale: Locale): Messages {
     progress: mergeNamespace<"progress">(en.progress, bnRaw.progress),
     result: mergeNamespace<"result">(en.result, bnRaw.result),
     staff: mergeNamespace<"staff">(en.staff, bnRaw.staff),
+    tournaments: mergeNamespace<"tournaments">(en.tournaments, bnRaw.tournaments),
+    adaptive: mergeNamespace<"adaptive">(en.adaptive, bnRaw.adaptive),
   };
 }
 

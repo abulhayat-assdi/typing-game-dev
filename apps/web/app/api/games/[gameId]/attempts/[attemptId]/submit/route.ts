@@ -17,6 +17,7 @@ import {
   computeRawMetrics,
   computeScore,
 } from "@tap/scoring";
+import { alignKeys } from "@tap/adaptive";
 import { diffExpected, isTerminal, validateSubmission } from "@tap/game-engine";
 import { getSession, unauthorized, type Session } from "../../../../../../../lib/server/auth";
 import { userDbClient } from "../../../../../../../lib/server/auth";
@@ -24,11 +25,22 @@ import {
   createSupabaseAttemptStore,
   type AttemptStore,
 } from "../../../../../../../lib/server/attempt-store";
+import {
+  createSupabaseAdaptiveStore,
+  type AdaptiveStore,
+} from "../../../../../../../lib/server/adaptive-store";
 import enErrors from "../../../../../../../messages/en/errors.json";
 
 export interface SubmitDeps {
   session: Session | null;
   store: AttemptStore | null;
+  /**
+   * Adaptive hook (M15, best-effort): after a validated submit, align
+   * expected vs typed position-wise and record key evidence, then
+   * refresh the cached profile. Failures never fail the submit —
+   * the sweeper replays refresh later.
+   */
+  adaptive?: AdaptiveStore | null;
 }
 
 function fail(code: string, message: string, status: number): NextResponse {
@@ -139,6 +151,20 @@ export async function handleSubmitAttempt(
         progression: null,
       });
     }
+    // Validated: feed the adaptive loop (best-effort; never fails submit).
+    if (deps.adaptive) {
+      try {
+        const alignment = alignKeys(attempt.expectedText, body.typedText);
+        await deps.adaptive.recordAttempt({
+          attemptId: attempt.id,
+          keys: alignment.keys,
+          pairs: alignment.pairs,
+        });
+        await deps.adaptive.refreshProfile();
+      } catch {
+        // Sweep replays refresh later; the attempt stays validated.
+      }
+    }
     // Validated: run the progression pipeline. A failure here leaves a
     // validated-but-unrewarded attempt (safe: idempotent replay via SQL).
     try {
@@ -190,6 +216,7 @@ export async function POST(
     {
       session,
       store: client ? createSupabaseAttemptStore(client) : null,
+      adaptive: client ? createSupabaseAdaptiveStore(client) : null,
     },
   );
 }

@@ -50,6 +50,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.116.0
         version: 2.116.0
+      '@tap/adaptive':
+        specifier: workspace:^
+        version: link:../../packages/adaptive
       '@tap/content':
         specifier: workspace:^
         version: link:../../packages/content
@@ -241,6 +244,12 @@ importers:
         version: 5.9.3
 
   packages/season:
+    devDependencies:
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  packages/tournament:
     devDependencies:
       typescript:
         specifier: ^5.6.3
