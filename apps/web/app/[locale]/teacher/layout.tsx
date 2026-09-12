@@ -41,6 +41,10 @@ export default async function TeacherLayout({
             href: `/${locale}/teacher/competitions`,
             label: tn("competitions"),
           },
+          {
+            href: `/${locale}/teacher/clan`,
+            label: tn("clan"),
+          },
         ]}
       />
       <div className="mx-auto w-full max-w-6xl px-4 py-6">{children}</div>

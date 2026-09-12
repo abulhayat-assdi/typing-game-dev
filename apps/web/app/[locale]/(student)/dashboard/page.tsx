@@ -13,8 +13,11 @@ import { isLocale } from "../../../../lib/i18n";
 import { getTranslator } from "../../../../lib/i18n";
 import { studentContext } from "../../../../lib/server/student-pages";
 import { getStudentDashboard } from "../../../../lib/server/student";
+import { userDbClient } from "../../../../lib/server/auth";
+import { createSupabaseMissionStore } from "../../../../lib/server/mission-store";
 import { WelcomeBanner } from "../../../../components/welcome-banner";
 import { XpCounter } from "../../../../components/xp-counter";
+import { MissionWidgets } from "../../../../components/mission-widgets";
 
 export default async function DashboardPage({
   params,
@@ -26,6 +29,10 @@ export default async function DashboardPage({
   const tp = getTranslator(locale, "profile");
   const { session, store } = await studentContext(locale);
   const data = await getStudentDashboard(session.userId, store);
+  const missionClient = await userDbClient();
+  const missions = missionClient
+    ? await createSupabaseMissionStore(missionClient).getToday(session.userId)
+    : [];
 
   if (!data || !data.membership) {
     return (
@@ -115,8 +122,13 @@ export default async function DashboardPage({
         </CardContent>
       </Card>
 
-      {data.latestBadge ? (
-        <Card>
+      <MissionWidgets
+        locale={locale}
+        daily={missions.filter((m) => m.period === "daily")}
+        weekly={missions.filter((m) => m.period === "weekly")}
+      />
+
+      {data.latestBadge ? (        <Card>
           <CardContent>
             <div className="flex items-center gap-4">
               <AchievementBadge name={data.latestBadge.name} earned />

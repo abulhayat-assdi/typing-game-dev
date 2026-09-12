@@ -1,0 +1,23 @@
+{
+  "hubTitle": "আজকের অভিযান",
+  "hubSubtitle": "অভিযান শেষ করুন, XP জিতুন, ধারাবাহিকতা ধরে রাখুন।",
+  "sectionDaily": "আজকের অভিযান",
+  "sectionWeekly": "সাপ্তাহিক চ্যালেঞ্জ",
+  "sectionEvent": "বিশেষ অভিযান",
+  "emptySection": "এখন কোনো অভিযান নেই।",
+  "statusAvailable": "উপলব্ধ",
+  "statusActive": "চলমান",
+  "statusCompleted": "সমাপ্ত",
+  "statusLocked": "তালাবদ্ধ",
+  "startQuest": "অভিযান শুরু করুন",
+  "continueQuest": "চালিয়ে যান",
+  "viewAll": "সব অভিযান দেখুন",
+  "manageTitle": "অভিযান",
+  "noMissions": "এখনো কোনো অভিযান নেই।",
+  "saveDraft": "খসড়া সংরক্ষণ",
+  "activate": "সক্রিয় করুন",
+  "deactivate": "নিষ্ক্রিয় করুন",
+  "next": "পরবর্তী",
+  "back": "পেছনে",
+  "actionFailed": "কাজটি ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+}

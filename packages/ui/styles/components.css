@@ -118,6 +118,14 @@
 .tap-skeleton-stack { display: flex; flex-direction: column; gap: 0.5rem; }
 .tap-skeleton { height: 0.9rem; border-radius: var(--radius-sm); background: linear-gradient(90deg, var(--color-surface-raised), var(--color-line), var(--color-surface-raised)); background-size: 200% 100%; animation: tap-shimmer 1.4s infinite; }
 @keyframes tap-shimmer { to { background-position: -200% 0; } }
+@keyframes mission-pop {
+  0% { transform: scale(0.92); opacity: 0; }
+  60% { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe\:animate-\[mission-pop_600ms_ease-out\] { animation: none; }
+}
 
 .tap-alert { border-radius: var(--radius-md); padding: 0.875rem 1rem; border: 1px solid; }
 .tap-alert-info { background: var(--color-info-100); border-color: var(--color-info-500); color: #0c4a6e; }

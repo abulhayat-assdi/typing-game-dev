@@ -94,10 +94,9 @@ BEGIN
   IF NOT FOUND THEN
     RAISE EXCEPTION 'NOT_FOUND';
   END IF;
-  IF v_inst.status = 'completed' THEN
-    RETURN v_inst.status;
-  END IF;
-  IF v_inst.status NOT IN ('available', 'active') THEN
+  -- Only started instances accumulate progress; available ones wait for
+  -- fn_start_mission, completed ones are immutable.
+  IF v_inst.status <> 'active' THEN
     RETURN v_inst.status;
   END IF;
   SELECT * INTO v_m FROM public.missions WHERE id = v_inst.mission_id;
@@ -259,7 +258,7 @@ BEGIN
   END IF;
   FOR v_id IN
     SELECT id FROM public.mission_instances
-    WHERE user_id = p_user AND status IN ('available', 'active')
+    WHERE user_id = p_user AND status = 'active'
   LOOP
     PERFORM public.fn_sync_mission_instance(v_id);
     v_n := v_n + 1;
@@ -325,8 +324,17 @@ ALTER TABLE public.daily_mission_assignments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.weekly_challenges ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.mission_reward_events ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY missions_select_active ON public.missions
-  FOR SELECT TO authenticated USING (status = 'active');
+DROP POLICY IF EXISTS missions_select_active ON public.missions;
+DROP POLICY IF EXISTS missions_select_admin ON public.missions;
+DROP POLICY IF EXISTS mission_versions_select ON public.mission_versions;
+DROP POLICY IF EXISTS mission_objectives_select ON public.mission_objectives;
+DROP POLICY IF EXISTS mission_instances_select ON public.mission_instances;
+DROP POLICY IF EXISTS mission_progress_select ON public.mission_progress;
+DROP POLICY IF EXISTS mission_completion_select ON public.mission_completion_events;
+DROP POLICY IF EXISTS mission_assignments_select ON public.daily_mission_assignments;
+DROP POLICY IF EXISTS mission_weekly_select ON public.weekly_challenges;
+DROP POLICY IF EXISTS mission_rewards_select ON public.mission_reward_events;
+CREATE POLICY missions_select_active ON public.missions  FOR SELECT TO authenticated USING (status = 'active');
 CREATE POLICY missions_select_admin ON public.missions
   FOR SELECT TO authenticated
   USING (public.fn_is_mission_admin() OR public.is_super_admin());

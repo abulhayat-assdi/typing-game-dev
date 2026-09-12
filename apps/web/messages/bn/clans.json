@@ -1,0 +1,23 @@
+{
+  "hubTitle": "আমার ক্ল্যান",
+  "hubSubtitle": "তোমার ব্যাচ, তোমার দল।",
+  "sectionMembers": "সদস্য",
+  "sectionTop": "সেরা অবদানকারী",
+  "sectionMissions": "ক্ল্যান অভিযান",
+  "sectionHelp": "সাহায্য বোর্ড",
+  "sectionActivity": "সাম্প্রতিক কার্যক্রম",
+  "emptySection": "এখনো কিছু নেই।",
+  "requestHelp": "সাহায্য চান",
+  "contribute": "সাহায্য করুন",
+  "viewMembers": "সব সদস্য",
+  "viewMissions": "সব অভিযান",
+  "viewHelp": "সাহায্য বোর্ড",
+  "boardTitle": "ক্ল্যান বোর্ড",
+  "comingSoon": "শীঘ্রই আসছে",
+  "manageTitle": "ক্ল্যান",
+  "noClans": "এখনো কোনো ক্ল্যান নেই।",
+  "save": "সংরক্ষণ",
+  "activate": "সক্রিয় করুন",
+  "deactivate": "নিষ্ক্রিয় করুন",
+  "actionFailed": "কাজটি ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+}
