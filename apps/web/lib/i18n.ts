@@ -33,6 +33,8 @@ import enResult from "../messages/en/result.json";
 import enStaff from "../messages/en/staff.json";
 import enTournaments from "../messages/en/tournaments.json";
 import enAdaptive from "../messages/en/adaptive.json";
+import enShop from "../messages/en/shop.json";
+import enRewards from "../messages/en/rewards.json";
 import bnA11y from "../messages/bn/a11y.json";
 import bnAuth from "../messages/bn/auth.json";
 import bnCommon from "../messages/bn/common.json";
@@ -57,6 +59,8 @@ import bnResult from "../messages/bn/result.json";
 import bnStaff from "../messages/bn/staff.json";
 import bnTournaments from "../messages/bn/tournaments.json";
 import bnAdaptive from "../messages/bn/adaptive.json";
+import bnShop from "../messages/bn/shop.json";
+import bnRewards from "../messages/bn/rewards.json";
 
 export const LOCALES = ["en", "bn"] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -87,6 +91,8 @@ export interface Messages {
   staff: typeof enStaff;
   tournaments: typeof enTournaments;
   adaptive: typeof enAdaptive;
+  shop: typeof enShop;
+  rewards: typeof enRewards;
 }
 
 export type Namespace = keyof Messages;
@@ -117,6 +123,8 @@ const en: Messages = {
   staff: enStaff,
   tournaments: enTournaments,
   adaptive: enAdaptive,
+  shop: enShop,
+  rewards: enRewards,
 };
 
 /** Bangla may omit keys; anything missing falls back to English. */
@@ -146,6 +154,8 @@ const bnRaw: PartialMessages = {
   staff: bnStaff,
   tournaments: bnTournaments,
   adaptive: bnAdaptive,
+  shop: bnShop,
+  rewards: bnRewards,
 };
 
 function mergeNamespace<K extends Namespace>(
@@ -215,6 +225,8 @@ export function getMessages(locale: Locale): Messages {
     staff: mergeNamespace<"staff">(en.staff, bnRaw.staff),
     tournaments: mergeNamespace<"tournaments">(en.tournaments, bnRaw.tournaments),
     adaptive: mergeNamespace<"adaptive">(en.adaptive, bnRaw.adaptive),
+    shop: mergeNamespace<"shop">(en.shop, bnRaw.shop),
+    rewards: mergeNamespace<"rewards">(en.rewards, bnRaw.rewards),
   };
 }
 

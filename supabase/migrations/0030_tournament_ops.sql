@@ -813,7 +813,10 @@ DECLARE
   v_occupant uuid;
   v_war_status text;
 BEGIN
-  SELECT * INTO v_m FROM public.tournament_matches WHERE id = p_match;
+  -- Row lock serializes concurrent finalizations of the same match;
+  -- the loser re-reads the finalized row below and gets IMMUTABLE.
+  SELECT * INTO v_m FROM public.tournament_matches
+  WHERE id = p_match FOR UPDATE;
   IF NOT FOUND THEN
     RAISE EXCEPTION 'NOT_FOUND';
   END IF;
