@@ -6,7 +6,14 @@
  */
 import type { GameMode } from "@tap/game-engine";
 
-export type PromptKind = "letters" | "words" | "sentences" | "numbers" | "symbols";
+export type PromptKind =
+  | "letters"
+  | "words"
+  | "sentences"
+  | "numbers"
+  | "symbols"
+  | "paragraphs"
+  | "shortcuts";
 
 export interface PromptSet {
   ref: string;
@@ -137,6 +144,8 @@ const JOINER: Record<PromptKind, string> = {
   sentences: " ",
   numbers: "",
   symbols: "",
+  paragraphs: "\n\n",
+  shortcuts: " ",
 };
 
 /**
@@ -169,18 +178,24 @@ function setVersionOf(set: PromptSet): number {
   return set.version;
 }
 
-/** Game modes each prompt kind can serve. */
+/** Game modes each prompt kind can serve. Every kind additionally serves
+ * "mixed" (mixed draws across kinds; all six shipped mixed games run on
+ * single-kind sets, so the catalog treats any kind as mixed-compatible). */
 export function modesForKind(kind: PromptKind): GameMode[] {
   switch (kind) {
     case "letters":
-      return ["letter"];
+      return ["letter", "mixed"];
     case "words":
-      return ["word"];
+      return ["word", "mixed"];
     case "sentences":
-      return ["sentence"];
+      return ["sentence", "mixed"];
     case "numbers":
-      return ["number"];
+      return ["number", "mixed"];
     case "symbols":
-      return ["symbol"];
+      return ["symbol", "mixed"];
+    case "paragraphs":
+      return ["paragraph", "story", "mixed"];
+    case "shortcuts":
+      return ["shortcut", "mixed"];
   }
 }

@@ -9,13 +9,8 @@
  * current_version; history is never rewritten.
  */
 import { createClient } from "@supabase/supabase-js";
-import {
-  GAMES,
-  PROMPT_SETS,
-  WORLDS,
-  validateCatalog,
-  type GameDefinition,
-} from "@tap/content";
+import { GAMES, PROMPT_SETS, WORLDS, validateCatalog } from "@tap/content";
+import { upsertGameDefinition } from "./seed-lib";
 
 function fail(message: string): never {
   console.error(`seed:catalog FAILED: ${message}`);
@@ -29,29 +24,6 @@ function isReal(value: string | undefined): boolean {
     !value.startsWith("placeholder-") &&
     !value.includes("example.com")
   );
-}
-
-function definitionRow(game: GameDefinition): Record<string, unknown> {
-  return {
-    slug: game.slug,
-    world_id: game.worldSlug,
-    category: game.category,
-    mechanic: game.mechanic,
-    mode: game.mode,
-    difficulty: game.difficulty,
-    skill_bands: game.skillBands,
-    prompt_set_ref: game.promptSource.ref,
-    prompt_units: game.promptSource.units,
-    input: game.inputRules,
-    timing: game.timingRules,
-    scoring_profile_id: game.scoringProfile,
-    unlock_rule: game.unlockRule,
-    attempt_rules: game.attemptRules,
-    theme: game.theme,
-    config: game.config,
-    competition_eligible: game.competitionEligible,
-    is_active: game.isActive,
-  };
 }
 
 async function main(): Promise<void> {
@@ -104,58 +76,11 @@ async function main(): Promise<void> {
   let games = 0;
   let versions = 0;
   for (const game of GAMES) {
-    const row = definitionRow(game);
-    const existing = await db
-      .from("games")
-      .select("id, current_version")
-      .eq("slug", game.slug)
-      .maybeSingle();
-    if (existing.error) fail(`games lookup: ${existing.error.message}`);
-
-    let gameId = (existing.data as { id: string } | null)?.id;
-    if (!gameId) {
-      const inserted = await db
-        .from("games")
-        .insert({ ...row, current_version: game.version })
-        .select("id")
-        .single();
-      if (inserted.error || !inserted.data) {
-        fail(`games insert ${game.slug}: ${inserted.error?.message}`);
-      }
-      gameId = (inserted.data as { id: string }).id;
-    } else {
-      const updated = await db
-        .from("games")
-        .update({ ...row, current_version: game.version })
-        .eq("id", gameId);
-      if (updated.error) fail(`games update ${game.slug}: ${updated.error.message}`);
-    }
-
-    const latest = await db
-      .from("game_versions")
-      .select("version, definition")
-      .eq("game_id", gameId)
-      .order("version", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    if (latest.error) fail(`versions lookup: ${latest.error.message}`);
-    const latestDef = (latest.data as { version: number; definition: unknown } | null)
-      ?.definition;
-    if (JSON.stringify(latestDef ?? null) !== JSON.stringify(game)) {
-      const nextVersion =
-        ((latest.data as { version: number } | null)?.version ?? 0) + 1;
-      const { error } = await db.from("game_versions").insert({
-        game_id: gameId,
-        version: nextVersion,
-        definition: game,
-      });
-      if (error) fail(`versions insert ${game.slug}: ${error.message}`);
-      versions += 1;
-      const bumped = await db
-        .from("games")
-        .update({ current_version: nextVersion })
-        .eq("id", gameId);
-      if (bumped.error) fail(`version bump ${game.slug}: ${bumped.error.message}`);
+    try {
+      const outcome = await upsertGameDefinition(db, game);
+      if (outcome !== "updated-same-version") versions += 1;
+    } catch (error) {
+      fail(`seed ${game.slug}: ${(error as Error).message}`);
     }
     games += 1;
   }

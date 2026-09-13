@@ -24,3 +24,18 @@ application architecture. Verified against the M4/M6 pipeline:
 Scale note: the catalog is data (100–200+ games fit the same
 tables/routes/caches). Per-game cost is one `games` row + prompt
 items + assets — no code deploys required after this checklist.
+
+## M19 gates (enforced by `pnpm validate:content` + importer)
+
+10. **Matrix cell**: claim a free mechanic x mode x difficulty cell
+    (`MECHANIC_MODE_PLACEMENTS`); near-clone fingerprints reject.
+11. **Skill focus**: declare 1–3 of the 21 `SKILL_FOCUSES`.
+12. **Roadmap slot**: reference the `ROADMAP_100/200` slot the game fills.
+13. **Reward registry**: declare `rewardEventKeys`; unregistered keys reject.
+14. **Asset manifest**: `games/{slug}/preview.png` + `art.png` present in
+    the `--assets` listing or the batch fails.
+15. **Batch import**: land via `scripts/import-content-batch.ts`
+    (dry-run → `--apply` to staging); direct `seed-catalog.ts` edits for
+    single games are deprecated — both share `seed-lib.ts`.
+
+Full strategy: `docs/content-scaleup.md`.

@@ -97,7 +97,9 @@ describe("prompt generation", () => {
   it("joins units per kind and maps modes", () => {
     expect(buildPrompt("beginner-words", 3, "s").text.split(" ")).toHaveLength(3);
     expect(buildPrompt("short-sentences", 2, "s").text.length).toBeGreaterThan(10);
-    expect(modesForKind("letters")).toEqual(["letter"]);
-    expect(modesForKind("symbols")).toEqual(["symbol"]);
+    // Every kind serves its home mode plus mixed (mixed draws across kinds).
+    expect(modesForKind("letters")).toEqual(["letter", "mixed"]);
+    expect(modesForKind("symbols")).toEqual(["symbol", "mixed"]);
+    expect(modesForKind("paragraphs")).toEqual(["paragraph", "story", "mixed"]);
   });
 });
