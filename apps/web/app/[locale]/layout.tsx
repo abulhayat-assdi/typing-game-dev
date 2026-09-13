@@ -4,6 +4,7 @@ import { ToastProvider } from "@tap/ui";
 import "../../styles/globals.css";
 import { AppHeader } from "../../components/app-header";
 import { ThemeProvider } from "../../components/theme-provider";
+import { hasAuthCookie } from "../../lib/server/auth";
 import {
   LOCALES,
   getMessages,
@@ -27,7 +28,7 @@ export function generateMetadata({
   return { title: t("title"), description: t("subtitle"), applicationName: common("appName") };
 }
 
-export default function LocaleLayout({
+export default async function LocaleLayout({
   children,
   params,
 }: {
@@ -38,6 +39,7 @@ export default function LocaleLayout({
   const locale = params.locale;
   const messages = getMessages(locale);
   const a11y = getTranslator(locale, "a11y");
+  const authed = await hasAuthCookie();
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -47,7 +49,7 @@ export default function LocaleLayout({
         </a>
         <ThemeProvider>
           <ToastProvider dismissLabel={messages.a11y.dismissAlert}>
-            <AppHeader locale={locale} />
+            <AppHeader locale={locale} authed={authed} />
             <main id="main-content">{children}</main>
           </ToastProvider>
         </ThemeProvider>

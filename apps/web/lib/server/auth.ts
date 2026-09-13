@@ -86,3 +86,19 @@ export async function getSession(deps?: {
 export function unauthorized(message = "Unauthorized"): Response {
   return Response.json({ error: "UNAUTHORIZED", message }, { status: 401 });
 }
+
+/**
+ * Cheap UX-only session presence check (mirrors middleware's cookie-shape
+ * match — no network round trip). Never used for enforcement: layouts/routes
+ * still call getSession()/requireActor() to verify the cookie is valid.
+ */
+export async function hasAuthCookie(): Promise<boolean> {
+  try {
+    const store = await cookies();
+    return store
+      .getAll()
+      .some((c) => c.name.startsWith("sb-") && c.name.endsWith("-auth-token"));
+  } catch {
+    return false;
+  }
+}
