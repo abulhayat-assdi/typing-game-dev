@@ -237,9 +237,13 @@ SELECT throws_ok(
 SELECT tests.set_claims('d1d1d1d1-1111-1111-1111-111111111111', 'm7aa@example.com');
 INSERT INTO public.courses (organization_id, title, slug) VALUES
   ('11111111-1111-1111-1111-111111111111', 'Audit Course', 'audit-course');
+-- Seed-tolerant: seed courses also fire the trigger, so assert the
+-- audit row for THIS course (was: exact count 1, broke with seed).
 SELECT is(count(*)::int, 1, 'course creation is audited')
 FROM public.audit_logs
-WHERE entity = 'courses' AND action = 'course.insert';
+WHERE entity = 'courses' AND action = 'course.insert'
+  AND entity_id = (SELECT id::text FROM public.courses
+                   WHERE slug = 'audit-course');
 
 INSERT INTO public.teacher_assignments (user_id, batch_id) VALUES
   ('d3d3d3d3-3333-3333-3333-333333333333',

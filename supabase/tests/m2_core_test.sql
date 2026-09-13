@@ -104,7 +104,7 @@ INSERT INTO public.batch_members (batch_id, user_id, roll_number, skill_track) V
   ('99990000-9999-9999-9999-999999999999',
    '06060606-0606-0606-0606-060606060606', 'R-001', 'beginner');
 
-SELECT plan(30);
+SELECT plan(31);
 
 -- ---------------------------------------------------------------------------
 -- 1-10: registration (student JWT call path)
@@ -281,7 +281,11 @@ WHERE id = '01010101-0101-0101-0101-010101010101';
 -- ---------------------------------------------------------------------------
 -- 27-28: flags readable, not writable
 -- ---------------------------------------------------------------------------
-SELECT is(count(*)::int, 5, 'feature flags are readable') FROM public.feature_flags;
+-- Flags table grows by design (each milestone registers its switches);
+-- readability means the seeded core flags plus any later additions.
+SELECT ok(count(*)::int >= 5, 'feature flags are readable') FROM public.feature_flags;
+SELECT is(count(*)::int, 1, 'core flag present')
+FROM public.feature_flags WHERE key = 'PHASE_1_CORE';
 
 UPDATE public.feature_flags SET enabled = false WHERE key = 'PHASE_1_CORE';
 SELECT is(enabled, true, 'feature flags are not writable via the API')

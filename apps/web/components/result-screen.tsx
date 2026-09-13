@@ -39,6 +39,8 @@ export function ResultScreen({
   gameHref,
   mapHref,
   dashboardHref,
+  recoveryHref,
+  recoveryLabel,
 }: {
   result: ValidatedResult;
   snap: SubmitSnapshot | null;
@@ -47,6 +49,12 @@ export function ResultScreen({
   gameHref: string;
   mapHref: string;
   dashboardHref: string;
+  /**
+   * Optional rewarded-recovery path (M17). The ordinary retry link
+   * always renders; the ad path is an extra, never the only route.
+   */
+  recoveryHref?: string | null;
+  recoveryLabel?: string | null;
 }) {
   const p = result.progression;
   const seconds = snap ? Math.max(0, Math.round(snap.elapsedMs / 1000)) : null;
@@ -122,6 +130,14 @@ export function ResultScreen({
         <Link href={gameHref} className="tap-btn tap-btn-secondary tap-btn-md">
           {s.playAgain}
         </Link>
+        {recoveryHref && recoveryLabel ? (
+          <Link
+            href={recoveryHref}
+            className="tap-btn tap-btn-secondary tap-btn-md"
+          >
+            {recoveryLabel}
+          </Link>
+        ) : null}
         <Link href={mapHref} className="tap-btn tap-btn-secondary tap-btn-md">
           {s.backToMap}
         </Link>
